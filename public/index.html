@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dir explorer</title>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/style.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/pace.css" media="all">
+</head>
+<body ng-app="drex">
+
+  <!--header-->
+  <header class="navbar-fixed-top" ng-include="'partials/headerTpl.html'"></header>
+  <!--!header-->
+
+  <!--container-->
+  <div class="container bs-docs-container">
+    <div class="row">
+      <!--left nav -->
+      <section menu-left class="col-md-3"></section>
+
+      <!--main view-->
+      <section ng-view class="col-md-9"></section>
+    </div>
+  </div>
+  <!--!container-->
+
+<script src="components/pace/pace.js"></script>
+<script src="components/angular/angular.js"></script>
+<script src="components/angular-resource/angular-resource.js"></script>
+<script src="app/services.js"></script>
+<script src="app/views.js"></script>
+<script src="app/directives.js"></script>
+<script src="app/main.js"></script>
+</body>
+</html>

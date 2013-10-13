@@ -1,0 +1,23 @@
+{
+  "name": "dir",
+  "main": "server",
+  "version": "0.0.0",
+  "authors": [
+    "Mikk Kirstein <mikk@kolmas.org>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.0.8",
+    "angular-resource": "~1.0.8",
+    "pace": "~0.4.14"
+  }
+}
