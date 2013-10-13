@@ -1,5 +1,6 @@
 var express  = require('express');
 var Resource = require('express-resource');
+var connect  = require('connect');
 var app      = express();
 
 // Register the routes.
@@ -7,6 +8,7 @@ var routes   = require('./rest')(app);
 
 // Application configuration
 app.configure(function() {
+  app.use(connect.compress());
   app.use(express.static(process.cwd() + '/public'));
 }).configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
