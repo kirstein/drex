@@ -26,8 +26,15 @@ module.exports = function (grunt) {
       }
     },
     karma : {
+      options : {
+        configFile : 'karma.conf.js',
+      },
       spec : {
-        configFile : 'karma.conf.js'
+        autoWatch  : false,
+        singleRun  : true
+      },
+      ci : {
+        background: true
       }
     },
     mochacli: {
@@ -55,7 +62,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-cli');
 
-  grunt.registerTask('ci', ['complexity', 'jshint', 'mochacli', 'karma']);
+  grunt.registerTask('ci', ['complexity', 'jshint', 'mochacli', 'karma:ci']);
   grunt.registerTask('test', ['ci', 'watch']);
   grunt.registerTask('default', ['test']);
 };
