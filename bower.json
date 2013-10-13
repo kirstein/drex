@@ -1,6 +1,6 @@
 {
-  "name": "dir",
-  "main": "server",
+  "name": "drex",
+  "main": "public",
   "version": "0.0.0",
   "authors": [
     "Mikk Kirstein <mikk@kolmas.org>"

@@ -1,19 +1,6 @@
-# stylesheets
+# Drex
 
+[![build status](https://secure.travis-ci.org/kirstein/drex.png)](http://travis-ci.org/kirstein/drex)
 
+# Work in progress
 
-[![build status](https://secure.travis-ci.org//stylesheets.png)](http://travis-ci.org//stylesheets)
-
-## Installation
-
-This module is installed via npm:
-
-``` bash
-$ npm install stylesheets
-```
-
-## Example Usage
-
-``` js
-var stylesheets = require('stylesheets');
-```
