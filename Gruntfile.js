@@ -16,11 +16,18 @@ module.exports = function (grunt) {
     jshint: {
       all: [
         'Gruntfile.js',
-        'app/**/*.js',
-        'test/**/*.js'
+        '**/*.js',
+        'test/**/*.js',
+        '!node_modules/**/*.js',
+        '!public/components/**/*.js'
       ],
       options: {
         jshintrc: '.jshintrc'
+      }
+    },
+    karma : {
+      spec : {
+        configFile : 'karma.conf.js'
       }
     },
     mochacli: {
@@ -43,11 +50,12 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks('grunt-complexity');
+  grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-cli');
 
-  grunt.registerTask('test', ['complexity', 'jshint', 'mochacli', 'watch']);
-  grunt.registerTask('ci', ['complexity', 'jshint', 'mochacli']);
+  grunt.registerTask('ci', ['complexity', 'jshint', 'mochacli', 'karma']);
+  grunt.registerTask('test', ['ci', 'watch']);
   grunt.registerTask('default', ['test']);
 };
