@@ -62,7 +62,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-cli');
 
-  grunt.registerTask('ci', ['complexity', 'jshint', 'mochacli', 'karma:ci']);
-  grunt.registerTask('test', ['ci', 'watch']);
+  grunt.registerTask('ci', ['complexity', 'jshint', 'mochacli', 'karma:spec']);
+  grunt.registerTask('test', ['jshint', 'mochacli', 'karma:ci', 'watch']);
   grunt.registerTask('default', ['test']);
 };
