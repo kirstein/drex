@@ -1,5 +1,7 @@
+var search = require('../../search');
+
 exports.index = function(req, res){
-  res.send('file index');
+  res.send(search.getFilesTree());
 };
 
 exports.show = function(req, res){

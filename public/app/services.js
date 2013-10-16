@@ -4,7 +4,12 @@
   var module = angular.module('drex.services', [ 'ngResource' ]);
 
   module.factory('fileResource', function($resource) {
-    return $resource('/rest/file/:fileId', { fileId: '@id' });
+    return $resource('/rest/file/:fileId', { fileId: '@id' }, {
+      get : {
+        isArray: true,
+        method : 'GET'
+      }
+    });
   });
 
   module.factory('configResource', function($resource) {

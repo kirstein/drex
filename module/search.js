@@ -26,7 +26,7 @@ exports.args = {
   //watch   : [ 'w', 'Watch for file/folder changes', 'boolean', true ] // Not implemented at the moment
 };
 
-exports.getFiles = function() {
+exports.getFilesTree = function() {
   return files;
 };
 
@@ -56,8 +56,10 @@ function buildFileListing(files) {
   // We will treat each argument as file or folder to search
   return files.reduce(function(old, dir) {
     // Remove the excess folders. Keep the folders somewhat relative to their dir path
-    return readdir.getFilesSync(dir, isFileBlacklisted).map(function(file) {
-      return file.substr(dir.length + 1);
+    return readdir.getTreeSync(dir, isFileBlacklisted).map(function(file) {
+      console.log('file', file);
+      file.target = file.target.substr(dir.length + 1);
+      return file;
     }).concat(old);
   }, []);
 }

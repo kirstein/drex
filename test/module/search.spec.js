@@ -21,9 +21,9 @@ describe ('search mod', function() {
     });
   });
 
-  describe ('#getFiles', function() {
-    it ('should contain #getFiles function', function() {
-      search.getFiles.should.be.instanceOf(Function);
+  describe ('#getFilesTree', function() {
+    it ('should contain #getFilesTree function', function() {
+      search.getFilesTree.should.be.instanceOf(Function);
     });
   });
 
@@ -33,25 +33,27 @@ describe ('search mod', function() {
     });
 
     it ('should ask for folder listing for defined folder', sinon.test(function() {
-      this.stub(readdir, 'getFilesSync').returns([ ]);
+      this.stub(readdir, 'getTreeSync').returns([ ]);
       search.init([ 'folder'], {});
-      readdir.getFilesSync.args[0][0].should.eql('folder');
+      readdir.getTreeSync.args[0][0].should.eql('folder');
     }));
 
     it ('should return the files returned by readdir', sinon.test(function() {
-      this.stub(readdir, 'getFilesSync').returns([ 'dir/test' ]);
+      var expected = [ { name: 'test', target : 'dir/test' }];
+      this.stub(readdir, 'getTreeSync').returns(expected);
       search.init([ 'dir' ], {});
-      search.getFiles().should.eql([ 'test' ]);
+      search.getFilesTree().should.eql(expected);
     }));
 
     it ('should exclude the files if they match the exclusion criteria regexp', sinon.test(function() {
       this.stub(fs, 'readdirSync').withArgs('dir').returns([ 'what', 'is' ]);
       this.stub(fs, 'statSync').returns({ isDirectory : function() { return false; }});
+
       search.init([ 'dir' ], {
         exclude : '.*'
       });
 
-      search.getFiles().should.eql([]);
+      search.getFilesTree().should.eql([]);
     }));
 
     it ('should exclude the files if they match the exclusion criteria', sinon.test(function() {
@@ -61,7 +63,7 @@ describe ('search mod', function() {
         exclude : 'is'
       });
 
-      search.getFiles().should.eql([ 'what' ]);
+      search.getFilesTree().should.eql([ { name : 'what', target : 'what' } ]);
     }));
 
     it ('should look at the starting directory if no args is defined', sinon.test(function() {
