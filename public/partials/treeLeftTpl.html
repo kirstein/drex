@@ -1,0 +1,7 @@
+<div ng-switch="!!node.children">
+  <a ng-switch-when="true" class="dir" href="javascript:void(0)" ng-click="toggleOpen(node)"> <span>{{ node.name }}</span> </a>
+  <a ng-switch-default ng-href="{{ getUrl(node) }}"> <span>{{ node.name }}</span> </a>
+</div>
+<ul ng-show="node.open" class="nav tree" ng-class="{ header : node.children, open : node.open }">
+  <li ng-repeat="node in node.children" ng-include="'partials/treeLeftTpl.html'"></li>
+</ul>

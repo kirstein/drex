@@ -1,6 +1,7 @@
 var express  = require('express');
 var Resource = require('express-resource');
 var connect  = require('connect');
+var fs       = require('fs');
 var app      = express();
 
 // Register the routes.
@@ -10,6 +11,12 @@ var routes   = require('./rest')(app);
 app.configure(function() {
   app.use(connect.compress());
   app.use(express.static(process.cwd() + '/public'));
+
+  // Pushstate
+  app.get("/file/*", function(req, res) {
+    res.set('content-type', 'text/html');
+    fs.createReadStream(process.cwd() + '/public/index.html').pipe(res);
+  });
 }).configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 }).configure('production', function(){

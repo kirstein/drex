@@ -3,11 +3,18 @@ describe ('services', function() {
 
   describe ('fileResource', function() {
 
-    it ('should fetch get', inject(function($httpBackend, fileResource) {
-      $httpBackend.expectGET('/rest/file').respond({ files : [] });
-      fileResource.get();
-      $httpBackend.flush();
-    }));
+    describe ('#list', function() {
+      it ('should have list method', inject(function(fileResource) {
+        expect(fileResource.list).toEqual(jasmine.any(Function));
+      }));
 
+      it ('should fetch an array', inject(function($httpBackend, fileResource) {
+        var spy = jasmine.createSpy();
+        $httpBackend.expectGET('/rest/file').respond([ {} ]);
+        fileResource.list(spy);
+        $httpBackend.flush();
+        expect(spy).toHaveBeenCalled();
+      }));
+    });
   });
 });

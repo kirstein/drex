@@ -5,7 +5,7 @@
 
   module.factory('fileResource', function($resource) {
     return $resource('/rest/file/:fileId', { fileId: '@id' }, {
-      get : {
+      list : {
         isArray: true,
         method : 'GET'
       }
