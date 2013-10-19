@@ -37,4 +37,14 @@ describe ('server mod', function() {
       spy.args[0][0].should.eql(3003);
     }));
   });
+
+  it ('should trigger callback after the server is started', sinon.test(function() {
+    var spy = sinon.spy();
+    this.stub(http, 'createServer').returns({
+      listen : function(opts, cb) { cb.bind({ address : function() { return { port : 123 }; } })(); }
+    });
+    server.init([], { }, spy);
+    spy.called.should.be.ok;
+  }));
+
 });

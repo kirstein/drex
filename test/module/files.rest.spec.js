@@ -11,7 +11,7 @@ describe ('file rest', function() {
 
     it ('should return the list of files', sinon.test(function() {
       var spy = sinon.spy();
-      this.stub(search, 'getFilesTree').returns([ {} ]);
+      this.stub(search, 'getFileTree').returns([ {} ]);
       file.index(null, {
         send : spy
       });

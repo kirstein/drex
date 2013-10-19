@@ -1,29 +1,17 @@
 #!/usr/bin/env node
-var _   = require('lodash');
 var cli = require('cli').enable('glob', 'help');
+var mod = require(__dirname + '/../lib/module');
 
-// Lets load our modules
-var modules = [
-  'server',
-  'search'
-].map(function(mod) {
-  return require(__dirname + '/../module/' + mod);
-});
+// Module directory
+var MOD_DIR = __dirname + '/../module/';
+
+// List of modules.
+var modules = mod.loadModulesSync(MOD_DIR);
 
 // Parse all the arguments
-cli.parse(
-  modules.filter(function(mod) {
-    return mod.args;
-  }).reduce(function(old, mod) {
-    return _.extend(old, mod.args);
-  }, {})
-);
-
-// Init all the modules with
+cli.parse(mod.getArguments(modules));
 cli.main(function(args, options) {
-  modules.forEach(function(mod) {
-    mod.init(args, options);
-  });
+  mod.initModules(modules, args, options);
 });
 
 

@@ -18,6 +18,7 @@ module.exports = function (grunt) {
         'Gruntfile.js',
         '**/*.js',
         'test/**/*.js',
+        '!tmp/**/*.js',
         '!node_modules/**/*.js',
         '!public/components/**/*.js'
       ],
@@ -47,7 +48,7 @@ module.exports = function (grunt) {
     },
     watch: {
       js: {
-        files: ['**/*.js', '!node_modules/**/*.js'],
+        files: ['**/*.js', '!node_modules/**/*.js', '!tmp/**/*.js'],
         tasks: ['default'],
         options: {
           nospawn: true

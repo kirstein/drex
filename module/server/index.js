@@ -12,7 +12,7 @@ app.configure(function() {
   app.use(connect.compress());
   app.use(express.static(process.cwd() + '/public'));
 
-  // Pushstate
+  // Pushstate magic!
   app.get("/file/*", function(req, res) {
     res.set('content-type', 'text/html');
     fs.createReadStream(process.cwd() + '/public/index.html').pipe(res);
@@ -24,7 +24,7 @@ app.configure(function() {
 });
 
 /**
- * Default arguments
+ * Module arguments
  */
 exports.args = {
   port : [ 'p', 'Port to listen', 'number', 3004 ]
@@ -35,12 +35,11 @@ exports.args = {
  *
  * @param {Array} args starting arguments
  * @param {Object} options object
- * @return {Object} exports
+ * @param {Function} cb callback that has to be called if the method is initiated
  */
-exports.init = function(args, options) {
+exports.init = function(args, options, cb) {
   app.listen(options.port, function() {
     console.log("Server listening on port %d in %s mode", this.address().port, app.settings.env);
+    cb();
   });
-
-  return exports;
 };

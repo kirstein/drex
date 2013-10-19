@@ -31,7 +31,7 @@ describe ('readdir', function() {
     it ('should return an object', sinon.test(function() {
       this.stub(fs, 'readdirSync').returns([ 'hello' ]);
       this.stub(fs, 'statSync').returns({ isDirectory : function() { return false; } });
-      readdir.getTreeSync('something').should.be.instanceOf(Array);
+      readdir.getTreeSync('something').should.have.type('object');
     }));
 
     it ('should validate the file if the validation function is defined', sinon.test(function() {
@@ -48,24 +48,46 @@ describe ('readdir', function() {
       fs.statSync.called.should.be.ok;
     }));
 
-    it ('should return an array of objects', sinon.test(function() {
+    it ('should return an object with tree and files keys', sinon.test(function() {
       this.stub(fs, 'readdirSync').returns([ 'hello' ]);
       this.stub(fs, 'statSync').returns({ isDirectory : function() { return false; } });
-      readdir.getTreeSync('something')[0].should.have.type('object');
+      readdir.getTreeSync('something').tree.should.be.ok;
+      readdir.getTreeSync('something').files.should.be.ok;
+    }));
+
+    it ('should return an a tree object that contain an array of objects', sinon.test(function() {
+      this.stub(fs, 'readdirSync').returns([ 'hello' ]);
+      this.stub(fs, 'statSync').returns({ isDirectory : function() { return false; } });
+      readdir.getTreeSync('something').tree[0].should.have.type('object');
+    }));
+
+    it ('should return an files array that contains direct file names', sinon.test(function() {
+      this.stub(fs, 'readdirSync').returns([ 'hello' ]);
+      this.stub(fs, 'statSync').returns({ isDirectory : function() { return false; } });
+      readdir.getTreeSync('something').files.should.be.instanceOf(Array);
+      readdir.getTreeSync('something').files[0].should.eql('something/hello');
     }));
 
     it ('should return recursive results', sinon.test(function() {
       var calls = 0;
-      this.stub(fs, 'readdirSync').returns([ 'wat' ]);
+      this.stub(fs, 'readdirSync').returns([ 'wat', 'test' ]);
       this.stub(fs, 'statSync').returns({ isDirectory: function() { return ++calls === 1; } });
 
-      readdir.getTreeSync('something').should.eql([ {
+      var result = readdir.getTreeSync('something');
+
+      result.tree.should.eql([ {
         name   : 'wat',
         target : 'something/wat',
         children : [
-          { name: 'wat', target: 'something/wat/wat' }
+          { name: 'wat', target: 'something/wat/wat' },
+          { name: 'test', target: 'something/wat/test' }
         ]
-      } ]);
+      }, {
+        name : 'test',
+        target : 'something/test'
+      }]);
+
+      result.files.should.eql([ 'something/wat/wat', 'something/wat/test', 'something/test' ]);
     }));
   });
 

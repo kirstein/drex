@@ -11,6 +11,10 @@ describe ('search mod', function() {
     delete require.cache[require.resolve(process.cwd() + '/module/search')];
   });
 
+  it ('should have priority of 0', function() {
+    search.priority.should.eql(0);
+  });
+
   describe ('#args', function() {
     it ('should have args defined', function() {
       search.args.should.be.instanceOf(Object);
@@ -21,9 +25,15 @@ describe ('search mod', function() {
     });
   });
 
-  describe ('#getFilesTree', function() {
-    it ('should contain #getFilesTree function', function() {
-      search.getFilesTree.should.be.instanceOf(Function);
+  describe ('#getFileTree', function() {
+    it ('should contain #getFileTree function', function() {
+      search.getFileTree.should.be.instanceOf(Function);
+    });
+  });
+
+  describe ('#getFiles', function() {
+    it ('should contain #getFiles function', function() {
+      search.getFiles.should.be.instanceOf(Function);
     });
   });
 
@@ -34,15 +44,16 @@ describe ('search mod', function() {
 
     it ('should ask for folder listing for defined folder', sinon.test(function() {
       this.stub(readdir, 'getTreeSync').returns([ ]);
-      search.init([ 'folder'], {});
+      search.init([ 'folder'], {}, sinon.spy());
       readdir.getTreeSync.args[0][0].should.eql('folder');
     }));
 
     it ('should return the files returned by readdir', sinon.test(function() {
-      var expected = [ { name: 'test', target : 'dir/test' }];
+      var expected = { tree : [ { name: 'test', target : 'dir/test' }], files : [ 'dir/test' ] };
       this.stub(readdir, 'getTreeSync').returns(expected);
-      search.init([ 'dir' ], {});
-      search.getFilesTree().should.eql(expected);
+      search.init([ 'dir' ], {}, sinon.spy());
+      search.getFileTree().should.eql(expected.tree);
+      search.getFiles().should.contain('test');
     }));
 
     it ('should exclude the files if they match the exclusion criteria regexp', sinon.test(function() {
@@ -51,9 +62,9 @@ describe ('search mod', function() {
 
       search.init([ 'dir' ], {
         exclude : '.*'
-      });
+      }, sinon.spy());
 
-      search.getFilesTree().should.eql([]);
+      search.getFileTree().should.eql([]);
     }));
 
     it ('should exclude the files if they match the exclusion criteria', sinon.test(function() {
@@ -61,15 +72,22 @@ describe ('search mod', function() {
       this.stub(fs, 'statSync').returns({ isDirectory : function() { return false; }});
       search.init([ 'dir' ], {
         exclude : 'is'
-      });
+      }, sinon.spy());
 
-      search.getFilesTree().should.eql([ { name : 'what', target : 'what' } ]);
+      search.getFileTree().should.eql([ { name : 'what', target : 'what' } ]);
     }));
 
     it ('should look at the starting directory if no args is defined', sinon.test(function() {
       this.stub(fs, 'readdirSync').returns([]);
-      search.init([], {});
+      search.init([], {}, sinon.spy());
       fs.readdirSync.args[0][0].should.eql(process.cwd());
+    }));
+
+    it ('should trigger the callback if its done', sinon.test(function() {
+      var spy = sinon.spy();
+      this.stub(fs, 'readdirSync').returns([]);
+      search.init([], {}, spy);
+      spy.called.should.be.ok;
     }));
   });
 });

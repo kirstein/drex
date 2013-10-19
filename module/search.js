@@ -1,7 +1,10 @@
 var readdir = require(__dirname + '/../lib/readdir');
+var _       = require('lodash');
 
 // All files that we managed to find
 var files   = [];
+// File tree
+var tree    = [];
 // Exclusion rules for our file finding
 var exclude = [];
 
@@ -26,7 +29,11 @@ exports.args = {
   //watch   : [ 'w', 'Watch for file/folder changes', 'boolean', true ] // Not implemented at the moment
 };
 
-exports.getFilesTree = function() {
+exports.getFileTree = function() {
+  return tree;
+};
+
+exports.getFiles = function() {
   return files;
 };
 
@@ -43,6 +50,23 @@ function buildBlacklistRules(rules) {
 }
 
 /**
+ * Removes excess folders
+ *
+ * @param {Array} files list
+ * @return {Array} files list
+ */
+function removeExcess(files, dir) {
+  return (files || []).map(function(file) {
+    if (_.isObject(file)) {
+      file.target = file.target.substr(dir.length + 1);
+      return file;
+    }
+
+    return file.substr(dir.length + 1);
+  });
+}
+
+/**
  * Builds the file listing while checking each individual file against blacklist.
  *
  * @param {Array} files list of folders
@@ -55,13 +79,16 @@ function buildFileListing(files) {
 
   // We will treat each argument as file or folder to search
   return files.reduce(function(old, dir) {
-    // Remove the excess folders. Keep the folders somewhat relative to their dir path
-    return readdir.getTreeSync(dir, isFileBlacklisted).map(function(file) {
-      console.log('file', file);
-      file.target = file.target.substr(dir.length + 1);
-      return file;
-    }).concat(old);
-  }, []);
+    var tree = readdir.getTreeSync(dir, isFileBlacklisted);
+
+    old.tree  = removeExcess(tree.tree, dir).concat(old.tree);
+    old.files = removeExcess(tree.files, dir).concat(old.files);
+
+    return old;
+  }, {
+    tree  : [],
+    files : []
+  });
 }
 
 /**
@@ -71,9 +98,16 @@ function buildFileListing(files) {
  * @param {Object} options object
  * @return {Object} exports
  */
-exports.init = function(args, options) {
-  exclude = buildBlacklistRules(options.exclude);
-  files   = buildFileListing(args);
+exports.init = function(args, options, cb) {
+  var listing;
 
-  return exports;
+  exclude = buildBlacklistRules(options.exclude);
+  listing = buildFileListing(args);
+  tree    = listing.tree;
+  files   = listing.files;
+
+  return cb();
 };
+
+// Module priority. This thing is top priority!
+exports.priority = 0;
