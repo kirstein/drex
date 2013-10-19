@@ -8,16 +8,32 @@
       replace     : false,
       templateUrl : 'partials/menuLeftTpl.html',
       controller  : function($scope, $location, fileResource) {
+        // Get the tree
         $scope.files = fileResource.list();
 
+        /**
+         * Replaces all slashes with dashes.
+         *
+         * @param {Object} node node with the target
+         * @return {String} file path for the node target.
+         */
         $scope.getUrl = function(node) {
           return '/file/' + node.target.replace(/\//g, '-');
         };
 
+        /**
+         * Checks if the current url represents the nodes target.
+         *
+         * @param {Object} node object with the target
+         * @return {Boolean} true if the url is for node, otherwise false
+         */
         $scope.isSelected = function(node) {
           return $location.path() === this.getUrl(node);
         };
 
+        /*
+         * @param {Object} node node object with open property
+         */
         $scope.toggleOpen = function(node) {
           node.open = !node.open;
         };

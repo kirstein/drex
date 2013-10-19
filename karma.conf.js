@@ -10,8 +10,13 @@ module.exports = function(config) {
       'components/angular-mocks/angular-mocks.js',
       'components/angular-resource/angular-resource.js',
       'app/**/*.js',
-      'test/**/*.js'
+      'test/**/*.js',
+      'partials/**/*.html'
     ],
-    singleRun  : true
+    singleRun  : true,
+    // generate js files from html templates to expose them during testing.
+    preprocessors : {
+      'partials/**/*.html': 'ng-html2js'
+    }
   });
 };

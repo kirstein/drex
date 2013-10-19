@@ -7,6 +7,8 @@ var files   = [];
 var tree    = [];
 // Exclusion rules for our file finding
 var exclude = [];
+// Target directories that we care about
+var folders = [];
 
 /**
  * Checks if the file is blacklisted or not.
@@ -20,22 +22,6 @@ function isFileBlacklisted(file) {
     return rule.test(file);
   });
 }
-
-/**
- * Arguments listing
- */
-exports.args = {
-  exclude : [ 'x', 'Exclude items from list (seperated by commas)', 'string', '^\\.']
-  //watch   : [ 'w', 'Watch for file/folder changes', 'boolean', true ] // Not implemented at the moment
-};
-
-exports.getFileTree = function() {
-  return tree;
-};
-
-exports.getFiles = function() {
-  return files;
-};
 
 /**
  * Builds the blacklist rules.
@@ -92,6 +78,37 @@ function buildFileListing(files) {
 }
 
 /**
+ * Arguments listing
+ */
+exports.args = {
+  exclude : [ 'x', 'Exclude items from list (seperated by commas)', 'string', '^\\.']
+  //watch   : [ 'w', 'Watch for file/folder changes', 'boolean', true ] // Not implemented at the moment
+};
+
+/**
+ * @return {Array} tree objects
+ */
+exports.getFileTree = function() {
+  return tree;
+};
+
+/**
+ * @return {Array} files list
+ */
+exports.getFiles = function() {
+  return files;
+};
+
+/**
+ * @param {String} file file to check
+ * @return {Boolean} true it is, false its not
+ */
+exports.isFileAvailable = function(file) {
+  // TODO: implement it!
+  return false;
+};
+
+/**
  * Initiate the module
  *
  * @param {Array} args starting arguments
@@ -101,6 +118,7 @@ function buildFileListing(files) {
 exports.init = function(args, options, cb) {
   var listing;
 
+  folders = args;
   exclude = buildBlacklistRules(options.exclude);
   listing = buildFileListing(args);
   tree    = listing.tree;

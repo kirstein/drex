@@ -37,6 +37,12 @@ describe ('search mod', function() {
     });
   });
 
+  describe ('#isFileAvailable', function() {
+    it ('should contain #isFileAvailable function', function() {
+      search.isFileAvailable.should.be.instanceOf(Function);
+    });
+  });
+
   describe ('#init', function() {
     it ('should contain init method', function() {
       search.init.should.be.instanceOf(Function);
