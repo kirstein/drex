@@ -1,6 +1,6 @@
 <div>
   <h3>target:</h3>
-  <ul class="tree">
-    <li ng-repeat="node in files" ng-class="{ open : node.open }" ng-include="'partials/treeLeftTpl.html'"></li>
+  <ul class="tree" ng-class="{ header : node.children, open : node.open }">
+    <li ng-repeat="node in files | orderBy:'children':false" ng-class="{ dir : node.children }" ng-include="'partials/treeLeftTpl.html'"></li>
   </ul>
 </div>

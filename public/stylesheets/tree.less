@@ -1,5 +1,16 @@
+@leaf-padding: 0 0 0 10px;
+
 ul.tree {
   a.dir span::after {
     content: '/'
   }
+  li {
+    list-style:none;
+    padding: @leaf-padding;
+  }
+  li.dir {
+    list-style:circle;
+  }
+
+  padding: 4px;
 }
