@@ -4,20 +4,16 @@ describe ('views spec', function() {
 
   describe ('file', function() {
     var scope;
-    beforeEach(inject(function($controller, $rootScope) {
+    beforeEach(inject(function($controller, $rootScope, $httpBackend) {
+      $httpBackend.expectGET('/rest/file').respond('some-content');
       $controller('FileController', {
-        $scope  : scope = $rootScope.$new(),
-        content : 'some-content'
+        $scope  : scope = $rootScope.$new()
       });
+      $httpBackend.flush();
     }));
 
     it ('should have scope', function() {
       expect(scope).toBeDefined();
     });
-
-    it ('should set content to scope param', function() {
-      expect(scope.content).toEqual('some-content');
-    });
   });
-
 });

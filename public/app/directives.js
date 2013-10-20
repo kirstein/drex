@@ -7,7 +7,7 @@
     return {
       replace     : false,
       templateUrl : 'partials/menuLeftTpl.html',
-      controller  : function($scope, $location, fileResource) {
+      controller  : function($scope, $location, fileResource, fileService) {
         // Get the tree
         $scope.files = fileResource.list();
 
@@ -18,7 +18,7 @@
          * @return {String} file path for the node target.
          */
         $scope.getUrl = function(node) {
-          return '/file/' + node.target.replace(/\//g, '-');
+          return fileService.getUrl(node.target);
         };
 
         /**
