@@ -36,23 +36,6 @@ function buildBlacklistRules(rules) {
 }
 
 /**
- * Removes excess folders
- *
- * @param {Array} files list
- * @return {Array} files list
- */
-function removeExcess(files, dir) {
-  return (files || []).map(function(file) {
-    if (_.isObject(file)) {
-      file.target = file.target.substr(dir.length + 1);
-      return file;
-    }
-
-    return file.substr(dir.length + 1);
-  });
-}
-
-/**
  * Builds the file listing while checking each individual file against blacklist.
  *
  * @param {Array} files list of folders
@@ -67,8 +50,8 @@ function buildFileListing(files) {
   return files.reduce(function(old, dir) {
     var tree = readdir.getTreeSync(dir, isFileBlacklisted);
 
-    old.tree  = removeExcess(tree.tree, dir).concat(old.tree);
-    old.files = removeExcess(tree.files, dir).concat(old.files);
+    old.tree  = (tree.tree  || []).concat(old.tree);
+    old.files = (tree.files || []).concat(old.files);
 
     return old;
   }, {

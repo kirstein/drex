@@ -59,7 +59,7 @@ describe ('search mod', function() {
       this.stub(readdir, 'getTreeSync').returns(expected);
       search.init([ 'dir' ], {}, sinon.spy());
       search.getFileTree().should.eql(expected.tree);
-      search.getFiles().should.contain('test');
+      search.getFiles().should.eql(['dir/test']);
     }));
 
     it ('should exclude the files if they match the exclusion criteria regexp', sinon.test(function() {
@@ -80,7 +80,7 @@ describe ('search mod', function() {
         exclude : 'is'
       }, sinon.spy());
 
-      search.getFileTree().should.eql([ { name : 'what', target : 'what' } ]);
+      search.getFileTree().should.eql([ { name : 'what', target : 'dir/what' } ]);
     }));
 
     it ('should look at the starting directory if no args is defined', sinon.test(function() {
