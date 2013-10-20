@@ -13,6 +13,10 @@ describe ('too many files warning', function() {
     tooMany.init.should.be.instanceOf(Function);
   });
 
+  it ('should have args', function() {
+    tooMany.args.maxFiles.should.be.ok;
+  });
+
   it ('should ask file listing from search ', sinon.test(function() {
     this.stub(search, 'getFiles').returns([]);
     tooMany.init([], {}, sinon.spy());
