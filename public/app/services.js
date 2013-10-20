@@ -23,7 +23,8 @@
      * @return {String} transformed title
      */
     this.parseUrl = function(title) {
-      return (title || '').replace(/\-/g, '/');
+      return (title || '').replace(/\-/g, '/')
+                          .replace(/\$dot\$/g, '.');
     };
 
     /**
@@ -31,7 +32,8 @@
      * @return {String} transformed url
      */
     this.getUrl = function(target) {
-      return '/file/' + target.replace(/\//g, '-');
+      return '/file/' + target.replace(/\//g, '-')
+                              .replace(/\./g, '$dot$');
     };
   });
 

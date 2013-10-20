@@ -83,15 +83,6 @@ exports.getFiles = function() {
 };
 
 /**
- * @param {String} file file to check
- * @return {Boolean} true it is, false its not
- */
-exports.isFileAvailable = function(file) {
-  // TODO: implement it!
-  return false;
-};
-
-/**
  * Initiate the module
  *
  * @param {Array} args starting arguments
@@ -110,5 +101,14 @@ exports.init = function(args, options, cb) {
   return cb();
 };
 
+/**
+ * Checks if the file is loaded
+ *
+ * @param {String} file file to load
+ * @return {Boolean} true if the file is loadable. Otherwise false
+ */
+exports.isLoadable = function(file) {
+  return !!~files.indexOf(file);
+};
 // Module priority. This thing is top priority!
 exports.priority = 0;

@@ -14,7 +14,6 @@ app.configure(function() {
 
   // Pushstate magic!
   app.get("/file/*", function(req, res) {
-    res.set('content-type', 'text/html');
     fs.createReadStream(process.cwd() + '/public/index.html').pipe(res);
   });
 }).configure('development', function(){

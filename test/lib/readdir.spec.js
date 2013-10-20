@@ -64,8 +64,7 @@ describe ('readdir', function() {
     it ('should return an files array that contains direct file names', sinon.test(function() {
       this.stub(fs, 'readdirSync').returns([ 'hello' ]);
       this.stub(fs, 'statSync').returns({ isDirectory : function() { return false; } });
-      readdir.getTreeSync('something').files.should.be.instanceOf(Array);
-      readdir.getTreeSync('something').files[0].should.eql('something/hello');
+      readdir.getTreeSync('something').files.should.eql([ 'something/hello' ]);
     }));
 
     it ('should return recursive results', sinon.test(function() {

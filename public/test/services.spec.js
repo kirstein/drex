@@ -11,6 +11,10 @@ describe ('services', function() {
         expect(fileService.parseUrl('-file-asd-asd')).toEqual('/file/asd/asd');
       }));
 
+      it ('should transform $dot$ to .', inject(function(fileService) {
+        expect(fileService.parseUrl('-file-asd$dot$json')).toEqual('/file/asd.json');
+      }));
+
       it ('should replace empty string when the input is not defined', inject(function(fileService) {
         expect(fileService.parseUrl()).toEqual('');
       }));
@@ -27,6 +31,10 @@ describe ('services', function() {
 
       it ('should transform dashes into slashes', inject(function(fileService) {
         expect(fileService.getUrl('test/hello')).toEqual('/file/test-hello');
+      }));
+
+      it ('should replace dots with $dot$', inject(function(fileService) {
+        expect(fileService.getUrl('test/hello.js')).toEqual('/file/test-hello$dot$js');
       }));
     });
   });

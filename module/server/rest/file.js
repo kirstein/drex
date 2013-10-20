@@ -1,12 +1,17 @@
-var search = require('../../search');
+var search  = require('../../search');
+var fileLib = require('../../../lib/file');
+var fs      = require('fs');
 
 exports.index = function(req, res){
-  console.log(search.getFileTree());
   res.send(search.getFileTree());
 };
 
 exports.show = function(req, res){
-  res.send('file file ' + req.params.file);
+  var file = fileLib.parse(req.params.file);
+  if (search.isLoadable(file)) {
+    return fs.createReadStream(file).pipe(res);
+  }
+  res.send(403);
 };
 
 exports.edit = function(req, res){

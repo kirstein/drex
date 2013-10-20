@@ -20,7 +20,7 @@ describe ('search mod', function() {
       search.args.should.be.instanceOf(Object);
     });
 
-    it ('should contain exlude argument', function() {
+    it ('should contain exclude argument', function() {
       search.args.exclude.should.be.ok;
     });
   });
@@ -37,10 +37,23 @@ describe ('search mod', function() {
     });
   });
 
-  describe ('#isFileAvailable', function() {
-    it ('should contain #isFileAvailable function', function() {
-      search.isFileAvailable.should.be.instanceOf(Function);
+  describe ('#isLoadable', function() {
+    it ('should contain #isLoadable function', function() {
+      search.isLoadable.should.be.instanceOf(Function);
     });
+
+    it ('should return false if no files have been loaded', function() {
+      search.isLoadable('test').should.eql(false);
+    });
+
+    it ('should return true if the file has been loaded earlier', sinon.test(function() {
+      var expected = { tree : [ { name: 'test', target : 'dir/test' }], files : [ 'dir/test' ] };
+      this.stub(readdir, 'getTreeSync').returns(expected);
+      search.init([ 'dir' ], {}, sinon.spy());
+      search.getFileTree();
+      search.isLoadable('dir/test').should.eql(true);
+    }));
+
   });
 
   describe ('#init', function() {
@@ -95,6 +108,7 @@ describe ('search mod', function() {
       search.init([], {}, spy);
       spy.called.should.be.ok;
     }));
+
   });
 });
 
